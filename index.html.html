@@ -3,1076 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ôn Tập Sinh Lý Tế Bào - ĐHYK Phạm Ngọc Thạch</title>
-    
-    <!-- PWA & Mobile Optimization -->
-    <meta name="theme-color" content="#0f766e">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Sinh Lý Tế Bào">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3063/3063176.png">
-    
-    <!-- Tailwind CSS CDN -->
+    <title>Sinh Lý Tế Bào - PNTU Study Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        teal: { 50: '#f0fdfa', 100: '#ccfbf1', 600: '#0d9488', 700: '#0f766e', 800: '#115e59', 900: '#134e4a' }
+                        medical: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                        }
                     }
                 }
             }
         }
     </script>
-    <!-- FontAwesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- MathJax for LaTeX Rendering -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="mathjax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        .card-flip {
-            perspective: 1000px;
-        }
-        .card-inner {
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
-        .card-flip.flipped .card-inner {
-            transform: rotateY(180deg);
-        }
-        .card-front, .card-back {
-            backface-visibility: hidden;
-        }
-        .card-back {
-            transform: rotateY(180deg);
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        .dark ::-webkit-scrollbar-track {
-            background: #1e293b;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #475569;
-        }
+        .perspective { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-100 antialiased min-h-screen flex flex-col transition-colors duration-200">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-200 min-h-screen flex flex-col">
 
     <!-- Header Navigation -->
-    <header class="bg-teal-700 dark:bg-slate-800 text-white shadow-md sticky top-0 z-50 transition-colors">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-2">
+    <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="bg-white text-teal-700 dark:bg-teal-600 dark:text-white p-2 rounded-lg font-bold text-xl shadow">
-                    <i class="fa-solid fa-dna"></i>
-                </div>
+                <i class="fa-solid font-bold fa-dna text-2xl text-sky-600 dark:text-sky-400"></i>
                 <div>
-                    <h1 class="font-bold text-lg leading-tight">Sinh Lý Tế Bào Pro</h1>
-                    <p class="text-xs text-teal-100 dark:text-slate-300">ĐHYK Phạm Ngọc Thạch • ThS. BS CK2. Trần Lê Mai Thảo</p>
+                    <h1 class="font-bold text-lg leading-tight">Sinh Lý Tế Bào</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">ĐHYK Phạm Ngọc Thạch</p>
                 </div>
             </div>
-            
-            <div class="flex items-center space-x-2 w-full sm:w-auto justify-between sm:justify-end">
-                <!-- Search Bar -->
-                <div class="relative w-full sm:w-56">
-                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Tìm thuật ngữ (Bơm Na-K, Opsonin...)" 
-                           class="w-full text-xs py-2 pl-8 pr-3 rounded-full text-slate-800 bg-teal-50 dark:bg-slate-700 dark:text-white border border-teal-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-300">
-                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
-                </div>
 
-                <!-- Dark Mode Toggle Button -->
-                <button onclick="toggleDarkMode()" title="Chuyển chế độ Sáng/Tối" class="p-2 rounded-full bg-teal-800 dark:bg-slate-700 text-teal-100 dark:text-amber-300 hover:text-white transition-colors">
-                    <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
+            <div class="flex items-center space-x-2">
+                <button id="ttsBtn" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-200" title="Đọc phát âm">
+                    <i class="fa-solid fa-volume-high"></i>
                 </button>
-
-                <!-- Install PWA Button -->
-                <button id="pwaInstallBtn" onclick="installPWA()" class="hidden px-2.5 py-1.5 rounded-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold text-xs shadow flex items-center space-x-1">
-                    <i class="fa-solid fa-download"></i><span>Cài App</span>
+                <button id="darkModeBtn" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-200" title="Chế độ Tối/Sáng">
+                    <i class="fa-solid fa-moon"></i>
                 </button>
             </div>
         </div>
 
         <!-- Navigation Tabs -->
-        <nav class="bg-teal-800 dark:bg-slate-850 text-teal-100 text-sm font-medium border-t border-teal-600/50 dark:border-slate-700 overflow-x-auto">
-            <div class="max-w-7xl mx-auto px-4 flex space-x-1 sm:space-x-4 min-w-max">
-                <button onclick="switchTab('summary')" id="tab-summary" class="tab-btn active px-4 py-2.5 border-b-2 border-teal-300 text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-book-open"></i><span>Tóm Tắt Lý Thuyết</span>
-                </button>
-                <button onclick="switchTab('tables')" id="tab-tables" class="tab-btn px-4 py-2.5 border-b-2 border-transparent hover:text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-table"></i><span>Bảng So Sánh & Số Liệu</span>
-                </button>
-                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2.5 border-b-2 border-transparent hover:text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-clone"></i><span>Thẻ Ghi Nhớ (Flashcards)</span>
-                </button>
-                <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-4 py-2.5 border-b-2 border-transparent hover:text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-list-check"></i><span>Trắc Nghiệm Ôn Tập</span>
-                </button>
-                <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn px-4 py-2.5 border-b-2 border-transparent hover:text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-chart-line"></i><span>Tiến Độ Học Tập</span>
-                </button>
-            </div>
-        </nav>
+        <div class="flex border-t border-slate-200 dark:border-slate-700 overflow-x-auto">
+            <button onclick="switchTab('summary')" class="tab-btn px-6 py-2.5 font-medium text-sm whitespace-nowrap border-b-2 border-sky-600 text-sky-600 dark:text-sky-400">Tóm Tắt Bài Học</button>
+            <button onclick="switchTab('flashcards')" class="tab-btn px-6 py-2.5 font-medium text-sm whitespace-nowrap border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-sky-600">Flashcards</button>
+            <button onclick="switchTab('quiz')" class="tab-btn px-6 py-2.5 font-medium text-sm whitespace-nowrap border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-sky-600">Trắc Nghiệm</button>
+            <button onclick="switchTab('data')" class="tab-btn px-6 py-2.5 font-medium text-sm whitespace-nowrap border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-sky-600">Bảng Tra Cứu Ion</button>
+        </div>
     </header>
 
     <!-- Main Content Container -->
-    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4">
 
-        <!-- Search Results Notification Overlay -->
-        <div id="searchResults" class="hidden mb-6 p-4 bg-amber-50 dark:bg-slate-800 border border-amber-200 dark:border-amber-700/50 rounded-xl shadow-sm">
-            <div class="flex justify-between items-center mb-2">
-                <h3 class="font-bold text-amber-800 dark:text-amber-300 text-sm"><i class="fa-solid fa-search mr-2"></i>Kết quả tìm kiếm</h3>
-                <button onclick="clearSearch()" class="text-xs text-amber-600 dark:text-amber-400 hover:underline font-semibold">Đóng search</button>
-            </div>
-            <div id="searchResultsList" class="space-y-2 text-xs text-slate-700 dark:text-slate-300"></div>
-        </div>
-
-        <!-- Navigation Tabs -->
-        <nav class="bg-teal-800 text-teal-100 text-sm font-medium border-t border-teal-600/50 overflow-x-auto">
-            <div class="max-w-7xl mx-auto px-4 flex space-x-1 sm:space-x-4 min-w-max">
-                <button onclick="switchTab('summary')" id="tab-summary" class="tab-btn active px-4 py-2.5 border-b-2 border-teal-300 text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-book-open"></i><span>Tóm Tắt Lý Thuyết</span>
-                </button>
-                <button onclick="switchTab('tables')" id="tab-tables" class="tab-btn px-4 py-2.5 border-b-2 border-transparent hover:text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-table"></i><span>Bảng So Sánh & Số Liệu</span>
-                </button>
-                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2.5 border-b-2 border-transparent hover:text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-clone"></i><span>Thẻ Ghi Nhớ (Flashcards)</span>
-                </button>
-                <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-4 py-2.5 border-b-2 border-transparent hover:text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-list-check"></i><span>Trắc Nghiệm Ôn Tập</span>
-                </button>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Main Content Container -->
-    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
-
-        <!-- Search Results Notification Overlay -->
-        <div id="searchResults" class="hidden mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl shadow-sm">
-            <div class="flex justify-between items-center mb-2">
-                <h3 class="font-bold text-amber-800 text-sm"><i class="fa-solid fa-search mr-2"></i>Kết quả tìm kiếm</h3>
-                <button onclick="clearSearch()" class="text-xs text-amber-600 hover:text-amber-800 font-semibold">Đóng search</button>
-            </div>
-            <div id="searchResultsList" class="space-y-2 text-xs text-slate-700"></div>
-        </div>
-
-        <!-- TAB 1: TÓM TẮT LÝ THUYẾT CHI TIẾT -->
-        <section id="content-summary" class="tab-content space-y-6">
-            
-            <!-- Target Banner -->
-            <div class="bg-gradient-to-r from-teal-600 to-emerald-600 text-white p-5 rounded-2xl shadow-md">
-                <h2 class="text-lg font-bold mb-2 flex items-center"><i class="fa-solid fa-bullseye mr-2"></i>6 Mục Tiêu Trọng Tâm Cần Nắm</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs text-teal-50">
-                    <div class="bg-white/10 p-2.5 rounded-lg border border-white/10">1. Cấu trúc hóa học & chức năng màng tế bào</div>
-                    <div class="bg-white/10 p-2.5 rounded-lg border border-white/10">2. Thành phần bào tương & chức năng bào quan</div>
-                    <div class="bg-white/10 p-2.5 rounded-lg border border-white/10">3. Cơ chế tiêu hóa tế bào (Ẩm bào & Thực bào)</div>
-                    <div class="bg-white/10 p-2.5 rounded-lg border border-white/10">4. Tổng hợp & chế biến chất (Lưới nội bào & Golgi)</div>
-                    <div class="bg-white/10 p-2.5 rounded-lg border border-white/10">5. Các hình thức Khuếch tán (Đơn thuần, Kênh, Mang)</div>
-                    <div class="bg-white/10 p-2.5 rounded-lg border border-white/10">6. Vận chuyển tích cực Nguyên phát & Thứ phát</div>
-                </div>
+        <!-- TAB 1: TÓM TẮT NỘI DUNG BÀI HỌC -->
+        <section id="summaryTab" class="space-y-6">
+            <div class="bg-sky-50 dark:bg-slate-800 p-4 rounded-xl border border-sky-100 dark:border-slate-700">
+                <h2 class="font-semibold text-sky-800 dark:text-sky-300 flex items-center gap-2">
+                    <i class="fa-solid fa-bullseye"></i> 6 Mục Tiêu Cốt Lõi
+                </h2>
+                <ul class="mt-2 text-sm space-y-1 text-slate-700 dark:text-slate-300 list-disc list-inside">
+                    <li>Mô tả cấu trúc màng tế bào & lớp màng kép Lipid</li>
+                    <li>Thành phần bào tương, chức năng các bào quan</li>
+                    <li>Sự tiêu hóa tế bào (Ẩm bào & Thực bào)</li>
+                    <li>Sự tổng hợp chất do Lưới nội bào & Bộ Golgi đảm bảo</li>
+                    <li>Các hình thức khuếch tán (Đơn thuần, Kênh, Chất mang)</li>
+                    <li>Các hình thức vận chuyển tích cực (Nguyên phát & Thứ phát)</li>
+                </ul>
             </div>
 
-            <!-- Topic 1: Màng tế bào -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
-                <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
-                    <h3 class="text-base font-bold text-teal-800 flex items-center"><i class="fa-solid fa-layer-group mr-2 text-teal-600"></i>1. Cấu Trúc & Thành Phần Màng Tế Bào</h3>
-                    <span class="text-xs bg-teal-100 text-teal-800 font-semibold px-2.5 py-1 rounded-full">Dày 7,5 - 10 nm</span>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="p-5 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                    <h3 class="font-bold text-lg mb-2 text-sky-600 dark:text-sky-400">1. Cấu Trúc Màng Tế Bào</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-2">Độ dày: 7.5 - 10 nm.</p>
+                    <ul class="text-sm space-y-1 text-slate-700 dark:text-slate-300">
+                        <li>• <strong>Protein (55%):</strong> Protein toàn bộ (kênh, mang, enzyme) & Protein ngoại vi.</li>
+                        <li>• <strong>Phospholipid (25%):</strong> Đầu ưa nước (hướng ra ngoài/trong), đuôi kị nước (hướng vào giữa).</li>
+                        <li>• <strong>Cholesterol (13%):</strong> Xen kẽ tạo độ ổn định màng.</li>
+                        <li>• <strong>Carbohydrate (3%):</strong> Tạo lớp Glycocalyx (tích điện âm, gắn tế bào, làm thụ thể receptor).</li>
+                    </ul>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <h4 class="font-bold text-slate-900 mb-2 border-b border-slate-200 pb-1 text-sm text-teal-700">Tỷ lệ thành phần hóa học</h4>
-                        <ul class="space-y-1.5 list-disc pl-4 text-slate-700">
-                            <li><strong>Protein (55%):</strong> Thành phần chiếm tỷ lệ cao nhất. Gồm Protein toàn bộ (xuyên màng) và Protein ngoại vi (ngoại biên).</li>
-                            <li><strong>Phospholipid (25%):</strong> Lớp kép kép. Đầu ưa nước ($PO_4^{3-}$, Choline, Glycerol) hướng ra ngoài/vào trong; Đuôi kỵ nước/ưa béo (axit béo) hướng vào giữa.</li>
-                            <li><strong>Cholesterol (13%):</strong> Xen kẽ điều hòa độ linh động màng.</li>
-                            <li><strong>Các Lipid khác (4%):</strong> Glycolipid,...</li>
-                            <li><strong>Carbohydrate (3%):</strong> Tạo lớp Glycocalyx bao phủ bề mặt ngoài.</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <h4 class="font-bold text-slate-900 mb-2 border-b border-slate-200 pb-1 text-sm text-teal-700">Chức năng của Carbohydrate Màng (Glycocalyx)</h4>
-                        <ol class="space-y-1.5 list-decimal pl-4 text-slate-700">
-                            <li><strong>Tích điện âm:</strong> Đẩy các vật thể/phân tử tích điện âm khác.</li>
-                            <li><strong>Liên kết mô:</strong> Glycocalyx tế bào này dính vào tế bào khác tạo nên mô.</li>
-                            <li><strong>Thụ thể (Receptor):</strong> Hoạt động như thụ thể gắn kết với các hormone.</li>
-                            <li><strong>Đáp ứng miễn dịch:</strong> Tham gia vào quá trình nhận diện và phản ứng miễn dịch.</li>
-                        </ol>
-                    </div>
-                </div>
-
-                <!-- Protein màng -->
-                <div class="bg-teal-50/60 p-4 rounded-xl border border-teal-100 text-xs">
-                    <h4 class="font-bold text-teal-900 mb-2 text-sm"><i class="fa-solid fa-cubes mr-1.5"></i>Phân Loại & Chức Năng Của Protein Màng</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div class="bg-white p-3 rounded-lg shadow-sm">
-                            <span class="font-bold text-teal-700 block mb-1">1. Kênh Protein (Channel)</span>
-                            Cho các chất tan trong nước, kích thước nhỏ đi qua: $H_2O$, $Na^+$, $K^+$, $Ca^{2+}$. Thường có tính chọn lọc và có cổng (gate) mở/đóng.
-                        </div>
-                        <div class="bg-white p-3 rounded-lg shadow-sm">
-                            <span class="font-bold text-teal-700 block mb-1">2. Protein Mang (Carrier)</span>
-                            Gắn và biến đổi cấu hình để vận chuyển các chất kích thước lớn hơn như Glucose (G), Acid amin (AA).
-                        </div>
-                        <div class="bg-white p-3 rounded-lg shadow-sm">
-                            <span class="font-bold text-teal-700 block mb-1">3. Enzyme & Thụ thể</span>
-                            Xúc tác các phản ứng trên màng hoặc tiếp nhận tín hiệu từ môi trường ngoại bào.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Topic 2: Vận chuyển thụ động & Khuếch tán -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
-                <div class="border-b border-slate-100 pb-3">
-                    <h3 class="text-base font-bold text-teal-800 flex items-center"><i class="fa-solid fa-arrows-split-up-and-left mr-2 text-teal-600"></i>2. Các Hình Thức Vận Chuyển Thụ Động (Khuếch Tán)</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Vận chuyển <strong>cùng chiều bậc thang nồng độ</strong>, <strong>KHÔNG tốn năng lượng ATP</strong>.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                        <h4 class="font-bold text-teal-800 mb-1.5 border-b pb-1">Khuếch Tán Đơn Thuần</h4>
-                        <p class="text-slate-600 mb-2">Chất hòa tan trực tiếp qua lớp lipid kép. Tốc độ khuếch tán tỷ lệ thuận với độ hòa tan trong lipid.</p>
-                        <div class="bg-teal-100/70 text-teal-900 p-2 rounded font-semibold">
-                            Chất đi qua: $O_2$, $CO_2$, Cồn (Alcohol), Axit béo, Vitamin tan trong dầu (A, D, E, K), $NH_3$.
-                        </div>
-                    </div>
-
-                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                        <h4 class="font-bold text-teal-800 mb-1.5 border-b pb-1">Khuếch Tán Qua Kênh</h4>
-                        <p class="text-slate-600 mb-2">Dành cho các chất tan trong nước, không qua được lớp lipid kép. Kênh có cổng điện thế hoặc cổng hóa học.</p>
-                        <div class="bg-teal-100/70 text-teal-900 p-2 rounded font-semibold">
-                            Chất đi qua: Nước ($H_2O$ qua aquaporin), các ion khoáng điện giải ($Na^+$, $K^+$, $Cl^-$, $Ca^{2+}$).
-                        </div>
-                    </div>
-
-                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                        <h4 class="font-bold text-teal-800 mb-1.5 border-b pb-1">Khuếch Tán Được Hỗ Trợ</h4>
-                        <p class="text-slate-600 mb-2">Cần protein mang đặc hiệu. Khi nồng độ chất tăng đến mức bão hòa protein mang sẽ đạt vận tốc tối đa $V_{max}$.</p>
-                        <div class="bg-teal-100/70 text-teal-900 p-2 rounded font-semibold">
-                            Chất đi qua: Glucose, Galactose, hầu hết Acid amin.<br>
-                            <em>*Insulin tăng tốc khuếch tán Glucose từ 10 - 20 lần!</em>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Các yếu tố ảnh hưởng khuếch tán -->
-                <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl text-xs space-y-1 text-amber-900">
-                    <h4 class="font-bold text-amber-800 text-sm mb-1"><i class="fa-solid fa-sliders mr-1.5"></i>Các yếu tố ảnh hưởng tốc độ khuếch tán:</h4>
-                    <p>• <strong>Bề dày màng:</strong> Màng càng dày $\rightarrow$ Khuếch tán càng chậm.</p>
-                    <p>• <strong>Độ hòa tan trong lipid:</strong> Độ tan trong lipid càng cao $\rightarrow$ Khuếch tán qua màng càng nhanh.</p>
-                    <p>• <strong>Số kênh protein:</strong> Tỷ lệ thuận trực tiếp với mật độ kênh trên diện tích màng.</p>
-                    <p>• <strong>Nhiệt độ:</strong> Nhiệt độ càng cao $\rightarrow$ Chuyển động nhiệt tăng $\rightarrow$ Khuếch tán càng nhanh.</p>
-                    <p>• <strong>Trọng lượng & Kích thước phân tử:</strong> Tốc độ chuyển động tỷ lệ ngược với căn bậc hai của trọng lượng phân tử ($v \propto 1/\sqrt{MW}$). Phân tử lớn bị kháng lực cản trở mạnh.</p>
-                </div>
-            </div>
-
-            <!-- Topic 3: Vận chuyển tích cực -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
-                <div class="border-b border-slate-100 pb-3">
-                    <h3 class="text-base font-bold text-teal-800 flex items-center"><i class="fa-solid fa-bolt mr-2 text-amber-500"></i>3. Vận Chuyển Tích Cực (Chủ Động)</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Vận chuyển <strong>ngược chiều bậc thang nồng độ</strong>, <strong>CẦN NĂNG LƯỢNG ATP + Protein mang + Enzyme</strong>.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                    <!-- Nguyên phát -->
-                    <div class="border border-teal-200 bg-teal-50/30 p-4 rounded-xl space-y-2">
-                        <span class="bg-teal-700 text-white px-2 py-0.5 rounded font-bold text-xs inline-block">VCTC Nguyên Phát</span>
-                        <p class="text-slate-700">Sử dụng trực tiếp năng lượng từ sự thủy phân ATP.</p>
-                        
-                        <div class="space-y-2 mt-2">
-                            <div class="bg-white p-3 rounded-lg border border-teal-100 shadow-sm">
-                                <strong class="text-teal-800 block mb-1">1. Bơm $Na^+-K^+$ ATPase:</strong>
-                                Bơm <strong>$3 Na^+$ RA NGOÀI</strong> và <strong>$2 K^+$ VÀO TRONG</strong> tế bào.<br>
-                                <em>Chức năng:</em> (1) Kiểm soát thể tích tế bào (giữ $Na^+$ ngoài màng gây áp suất thẩm thấu kéo nước ra ngoài, tránh vỡ tế bào); (2) Tạo điện thế màng (sinh điện vì xuất 3 dương, nhập 2 dương).
-                            </div>
-                            <div class="bg-white p-3 rounded-lg border border-teal-100 shadow-sm">
-                                <strong class="text-teal-800 block mb-1">2. Bơm Canxi ($Ca^{2+}$ ATPase):</strong>
-                                Bơm $Ca^{2+}$ từ bào tương ra ngoại bào hoặc vào trong các bào quan (lưới nội chất), duy trì nồng độ $Ca^{2+}$ bào tương cực thấp ($0,0001\text{ mEq/L}$).
-                            </div>
-                            <div class="bg-white p-3 rounded-lg border border-teal-100 shadow-sm">
-                                <strong class="text-teal-800 block mb-1">3. Bơm Hydro ($H^+$ Proton Pump):</strong>
-                                • Tuyến dạ dày (tế bào viền/parietal cells): Bơm $H^+$ vào lòng dạ dày tạo acid $HCl$ (bị ức chế bởi thuốc Omeprazole).<br>
-                                • Thận: Ở ống lượn xa và ống góp để bài tiết $H^+$.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Thứ phát -->
-                    <div class="border border-emerald-200 bg-emerald-50/30 p-4 rounded-xl space-y-2">
-                        <span class="bg-emerald-700 text-white px-2 py-0.5 rounded font-bold text-xs inline-block">VCTC Thứ Phát</span>
-                        <p class="text-slate-700">Không dùng trực tiếp ATP mà nhờ vào bậc thang nồng độ $Na^+$ được tạo ra từ bơm $Na^+-K^+$ nguyên phát.</p>
-
-                        <div class="space-y-2 mt-2">
-                            <div class="bg-white p-3 rounded-lg border border-emerald-100 shadow-sm">
-                                <strong class="text-emerald-800 block mb-1">1. Vận chuyển CÙNG CHIỀU (Symport):</strong>
-                                $Na^+$ kéo theo chất khác đi cùng chiều vào tế bào.<br>
-                                <em>Ví dụ:</em> Đồng vận chuyển $Na^+$-Glucose và $Na^+$-Acid amin ở tế bào biểu mô ruột và ống thận.
-                            </div>
-                            <div class="bg-white p-3 rounded-lg border border-emerald-100 shadow-sm">
-                                <strong class="text-emerald-800 block mb-1">2. Vận chuyển NGƯỢC CHIỀU (Antiport / Counter-transport):</strong>
-                                $Na^+$ đi vào trong tế bào đẩy chất khác đi ra ngoài.<br>
-                                <em>Ví dụ:</em> Trao đổi $Na^+-Ca^{2+}$ (đưa $Na^+$ vào, đẩy $Ca^{2+}$ ra ngoài) và trao đổi $Na^+-H^+$.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Topic 4: Bào quan & Tiêu hóa & Tổng hợp chất -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
-                <div class="border-b border-slate-100 pb-3">
-                    <h3 class="text-base font-bold text-teal-800 flex items-center"><i class="fa-solid fa-microscope mr-2 text-teal-600"></i>4. Bào Quan, Tiêu Hóa Tế Bào & Tổng Hợp Chất</h3>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-                    
-                    <!-- ER -->
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
-                        <h4 class="font-bold text-teal-800 text-sm border-b pb-1 flex items-center"><i class="fa-solid fa-network-wired mr-1.5"></i>Lưới Nội Bào (ER)</h4>
-                        <p><strong>Lưới nội bào hạt (Rough ER):</strong> Gắn Ribosome ở bề mặt ngoài. Chức năng chính: Tổng hợp Protein. Protein đi vào dịch khuôn, gắn với carbohydrate tạo Glycoprotein, gập chuỗi rút ngắn chiều dài.</p>
-                        <p><strong>Lưới nội bào trơn (Smooth ER):</strong> Không có ribosome. Chức năng: (1) Tổng hợp Lipid (Phospholipid & Cholesterol) để mở rộng màng; (2) Dị hóa Glycogen; (3) Cung cấp enzyme khử độc thuốc (oxy hóa, thủy phân, gắn axit glycuronic).</p>
-                    </div>
-
-                    <!-- Golgi -->
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
-                        <h4 class="font-bold text-teal-800 text-sm border-b pb-1 flex items-center"><i class="fa-solid fa-boxes-packing mr-1.5"></i>Bộ Golgi</h4>
-                        <p>• Nhận các túi vận chuyển (transport vesicles) từ ER, hòa màng và chế biến các sản phẩm.</p>
-                        <p>• Tổng hợp Carbohydrate riêng biệt: Axit Sialic và Galactose.</p>
-                        <p>• Tạo các Polymer saccharide lớn: Axit Hyaluronic và Chondroitin sulfate (thành phần chính của Proteoglycan trong chất tiết, chất nền kẽ, khuôn xương/sụn).</p>
-                        <p>• Tạo ra <strong>Lysosome</strong> và các <strong>Túi bài tiết (Secretory vesicles)</strong>.</p>
-                    </div>
-
-                    <!-- Lysosome -->
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
-                        <h4 class="font-bold text-teal-800 text-sm border-b pb-1 flex items-center"><i class="fa-solid fa-biohazard mr-1.5"></i>Tiêu Thể (Lysosome)</h4>
-                        <p>• Dạng túi (đường kính 250 - 750 nm) do Golgi tạo ra, chứa đầy các <strong>Enzyme Thủy Phân (Hydrolytic enzymes)</strong>.</p>
-                        <p>• Đóng vai trò như hệ thống tiêu hóa của tế bào: Tiêu hóa vi khuẩn, tiểu phân thức ăn, bào quan bị hư hỏng.</p>
-                        <p>• Bình thường màng bao bọc ngăn enzyme phá hủy tế bào. Khi mô bị viêm nhiễm, màng vỡ vỡ giải phóng enzyme tiêu các chất hữu cơ xung quanh.</p>
-                    </div>
-
-                    <!-- Ty thể -->
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
-                        <h4 class="font-bold text-teal-800 text-sm border-b pb-1 flex items-center"><i class="fa-solid fa-charging-station mr-1.5"></i>Ty Thể (Mitochondria)</h4>
-                        <p>• "Nhà máy sản xuất năng lượng" của tế bào. Số lượng phụ thuộc vào nhu cầu năng lượng.</p>
-                        <p>• Cấu trúc 2 màng lipid-protein kép: Màng ngoài phẳng; Màng trong gấp nếp thành các <strong>gai ty thể (cristae)</strong> chứa men oxy hóa phosphoryl hóa. Chất khuôn bên trong chứa men hòa tan.</p>
-                        <p>• Chứa ADN riêng, có khả năng tự nhân đôi khi tế bào tăng nhu cầu ATP.</p>
-                        <p>• Đường phân chuyển Glucose $\rightarrow$ Pyruvic acid $\rightarrow$ Acetyl-CoA vào ty thể chu trình Krebs tạo ra khoảng <strong>36 ATP</strong> + $CO_2$ + $H_2O$.</p>
-                    </div>
-
-                    <!-- Nhập bào -->
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2 col-span-1 md:col-span-2">
-                        <h4 class="font-bold text-teal-800 text-sm border-b pb-1 flex items-center"><i class="fa-solid fa-utensils mr-1.5"></i>Sự Nhập Bào (Endocytosis): Ẩm Bào & Thực Bào</h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div class="bg-white p-2.5 rounded border border-slate-200">
-                                <strong class="text-teal-700 block mb-1">Ẩm Bào (Pinocytosis)</strong>
-                                • Xảy ra liên tục ở màng hầu hết các tế bào.<br>
-                                • Vận chuyển dịch và phân tử nhỏ (100 - 200 nm).<br>
-                                • Phía dưới màng có mạng lưới protein hình sợi <strong>Clathrin</strong> (gồm sợi co thắt actin & myosin).<br>
-                                • Cần năng lượng <strong>ATP + $Ca^{2+}$</strong> ngoại bào để tách túi ẩm bào vào bào tương.
-                            </div>
-                            <div class="bg-white p-2.5 rounded border border-slate-200">
-                                <strong class="text-teal-700 block mb-1">Thực Bào (Phagocytosis)</strong>
-                                • Chỉ xảy ra ở một số tế bào chuyên biệt: <strong>Đại thực bào (Macrophage) & Bạch cầu đa nhân trung tính (Neutrophil)</strong>.<br>
-                                • Vận chuyển tiểu phân lớn: vi khuẩn, tế bào chết, mô hoại tử.<br>
-                                • <strong>Sự Opsonin hóa:</strong> Kháng thể gắn vào vi khuẩn, giúp thụ thể màng đại thực bào nhận diện và bọc lấy đối tượng.
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </section>
-
-        <!-- TAB 2: BẢNG SO SÁNH & SỐ LIỆU -->
-        <section id="content-tables" class="tab-content hidden space-y-6">
-            
-            <!-- Table 1: Ion Concentrations ECF vs ICF -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-3">
-                <h3 class="text-base font-bold text-teal-800 flex items-center"><i class="fa-solid fa-flask mr-2 text-teal-600"></i>Bảng Nồng Độ Các Chất Trong Dịch Ngoại Bào (ECF) & Dịch Nội Bào (ICF)</h3>
-                <p class="text-xs text-slate-500">Số liệu trích xuất từ slide bài giảng Sinh lý ĐHYK Phạm Ngọc Thạch.</p>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-teal-700 text-white font-semibold">
-                                <th class="p-2.5 rounded-tl-lg">Thành phần / Chất</th>
-                                <th class="p-2.5">Dịch Ngoại Bào (Extracellular Fluid - ECF)</th>
-                                <th class="p-2.5">Dịch Nội Bào (Intracellular Fluid - ICF)</th>
-                                <th class="p-2.5 rounded-tr-lg">Đặc điểm / Ghi chú</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-200 text-slate-700">
-                            <tr class="bg-slate-50">
-                                <td class="p-2.5 font-bold text-teal-900">Natri ($Na^+$)</td>
-                                <td class="p-2.5 font-semibold text-emerald-700">142 mEq/L</td>
-                                <td class="p-2.5">10 mEq/L</td>
-                                <td class="p-2.5">Ngoại bào cao hơn gấp ~14 lần. Tạo ASTT ngoại bào.</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2.5 font-bold text-teal-900">Kali ($K^+$)</td>
-                                <td class="p-2.5">4 mEq/L</td>
-                                <td class="p-2.5 font-semibold text-emerald-700">140 mEq/L</td>
-                                <td class="p-2.5">Nội bào cao hơn gấp ~35 lần. Chi phối điện thế nghỉ.</td>
-                            </tr>
-                            <tr class="bg-slate-50">
-                                <td class="p-2.5 font-bold text-teal-900">Canxi ($Ca^{2+}$)</td>
-                                <td class="p-2.5 font-semibold text-emerald-700">2.4 mEq/L</td>
-                                <td class="p-2.5">0.0001 mEq/L</td>
-                                <td class="p-2.5">Nội bào cực thấp nhờ bơm $Ca^{2+}$ đẩy ra ngoại bào/ER.</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2.5 font-bold text-teal-900">Magie ($Mg^{2+}$)</td>
-                                <td class="p-2.5">1.2 mEq/L</td>
-                                <td class="p-2.5 font-semibold text-emerald-700">58 mEq/L</td>
-                                <td class="p-2.5">Nội bào cao hơn nhiều.</td>
-                            </tr>
-                            <tr class="bg-slate-50">
-                                <td class="p-2.5 font-bold text-teal-900">Clo ($Cl^-$)</td>
-                                <td class="p-2.5 font-semibold text-emerald-700">103 mEq/L</td>
-                                <td class="p-2.5">4 mEq/L</td>
-                                <td class="p-2.5">Anion ngoại bào chính.</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2.5 font-bold text-teal-900">Bicarbonate ($HCO_3^-$)</td>
-                                <td class="p-2.5 font-semibold text-emerald-700">28 mEq/L</td>
-                                <td class="p-2.5">10 mEq/L</td>
-                                <td class="p-2.5">Hệ đệm đệm chính của máu/ngoại bào.</td>
-                            </tr>
-                            <tr class="bg-slate-50">
-                                <td class="p-2.5 font-bold text-teal-900">Phosphates ($PO_4^{3-}$)</td>
-                                <td class="p-2.5">4 mEq/L</td>
-                                <td class="p-2.5 font-semibold text-emerald-700">75 mEq/L</td>
-                                <td class="p-2.5">Anion nội bào chính.</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2.5 font-bold text-teal-900">Glucose</td>
-                                <td class="p-2.5 font-semibold text-emerald-700">90 mg/dl</td>
-                                <td class="p-2.5">0 - 20 mg/dl</td>
-                                <td class="p-2.5">Glucose vào tế bào được phosphoryl hóa ngay.</td>
-                            </tr>
-                            <tr class="bg-slate-50">
-                                <td class="p-2.5 font-bold text-teal-900">Protein</td>
-                                <td class="p-2.5">2 g/dl (5 mEq/L)</td>
-                                <td class="p-2.5 font-semibold text-emerald-700">16 g/dl (40 mEq/L)</td>
-                                <td class="p-2.5">Nội bào cao gấp 8 lần. Tạo áp suất keo nội bào.</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2.5 font-bold text-teal-900">pH</td>
-                                <td class="p-2.5 font-semibold text-emerald-700">7.4</td>
-                                <td class="p-2.5">7.0</td>
-                                <td class="p-2.5">Nội bào hơi axit hơn so với dịch ngoại bào.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Table 2: Transport comparison -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-3">
-                <h3 class="text-base font-bold text-teal-800 flex items-center"><i class="fa-solid fa-code-compare mr-2 text-teal-600"></i>So Sánh Các Hình Thức Vận Chuyển Chất Qua Màng</h3>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-slate-800 text-white font-semibold">
-                                <th class="p-2.5 rounded-tl-lg">Hình thức</th>
-                                <th class="p-2.5">Chiều vận chuyển</th>
-                                <th class="p-2.5">Năng lượng ATP</th>
-                                <th class="p-2.5">Protein mang/kênh</th>
-                                <th class="p-2.5">Ví dụ chất vận chuyển</th>
-                                <th class="p-2.5 rounded-tr-lg">Đặc điểm nổi bật</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-200 text-slate-700">
-                            <tr>
-                                <td class="p-2.5 font-bold text-teal-800">Khuếch tán đơn thuần</td>
-                                <td class="p-2.5">Cùng chiều gradien</td>
-                                <td class="p-2.5 text-red-600 font-semibold">Không</td>
-                                <td class="p-2.5 text-red-600">Không cần</td>
-                                <td class="p-2.5">$O_2$, $CO_2$, cồn, axit béo, Vit A/D/E/K</td>
-                                <td class="p-2.5">Tốc độ phụ thuộc độ tan lipid.</td>
-                            </tr>
-                            <tr class="bg-slate-50">
-                                <td class="p-2.5 font-bold text-teal-800">Khuếch tán qua kênh</td>
-                                <td class="p-2.5">Cùng chiều gradien</td>
-                                <td class="p-2.5 text-red-600 font-semibold">Không</td>
-                                <td class="p-2.5 text-emerald-600 font-semibold">Kênh protein</td>
-                                <td class="p-2.5">$H_2O$, $Na^+$, $K^+$, $Ca^{2+}$, $Cl^-$</td>
-                                <td class="p-2.5">Thấm chọn lọc, có cổng đóng/mở.</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2.5 font-bold text-teal-800">Khuếch tán hỗ trợ</td>
-                                <td class="p-2.5">Cùng chiều gradien</td>
-                                <td class="p-2.5 text-red-600 font-semibold">Không</td>
-                                <td class="p-2.5 text-emerald-600 font-semibold">Protein mang (Carrier)</td>
-                                <td class="p-2.5">Glucose, Galactose, Acid amin</td>
-                                <td class="p-2.5">Đạt tốc độ tối đa $V_{max}$ khi bão hòa.</td>
-                            </tr>
-                            <tr class="bg-slate-50">
-                                <td class="p-2.5 font-bold text-teal-800">VCTC Nguyên phát</td>
-                                <td class="p-2.5 font-semibold text-amber-700">Ngược chiều gradien</td>
-                                <td class="p-2.5 text-emerald-600 font-semibold">Có (Dùng trực tiếp ATP)</td>
-                                <td class="p-2.5 text-emerald-600 font-semibold">Protein bơm (ATPase)</td>
-                                <td class="p-2.5">Bơm $Na^+-K^+$, Bơm $Ca^{2+}$, Bơm $H^+$</td>
-                                <td class="p-2.5">Cần enzyme ATPase giải phóng ATP.</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2.5 font-bold text-teal-800">VCTC Thứ phát</td>
-                                <td class="p-2.5 font-semibold text-amber-700">Ngược chiều gradien</td>
-                                <td class="p-2.5 text-emerald-600 font-semibold">Có (Dùng năng lượng gradien $Na^+$)</td>
-                                <td class="p-2.5 text-emerald-600 font-semibold">Protein đồng vận/ngược vận</td>
-                                <td class="p-2.5">Đồng vận $Na^+$-Glucose, Trao đổi $Na^+-Ca^{2+}$</td>
-                                <td class="p-2.5">Phụ thuộc gián tiếp vào bơm $Na^+-K^+$.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- TAB 3: FLASHCARDS (THẺ GHI NHỚ) -->
-        <section id="content-flashcards" class="tab-content hidden space-y-6">
-            <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 flex-wrap gap-2">
-                <div>
-                    <h3 class="font-bold text-teal-800 dark:text-teal-300 text-sm"><i class="fa-solid fa-clone mr-2"></i>Thẻ Ghi Nhớ Ôn Nhanh Sinh Lý Tế Bào</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Nhấp vào thẻ để lật xem đáp án / giải thích.</p>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button onclick="speakFlashcard()" class="text-xs font-bold bg-teal-50 dark:bg-slate-700 text-teal-700 dark:text-teal-300 px-3 py-1.5 rounded-lg border border-teal-200 dark:border-slate-600 hover:bg-teal-100 flex items-center">
-                        <i class="fa-solid fa-volume-high mr-1"></i>Đọc âm thanh
-                    </button>
-                    <span class="text-xs font-semibold bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 px-3 py-1.5 rounded-full" id="cardCounter">
-                        Thẻ 1 / 10
-                    </span>
-                </div>
-            </div>
-
-            <!-- Card View Container -->
-            <div class="max-w-xl mx-auto">
-                <div id="flashcard" onclick="flipCard()" class="card-flip w-full h-64 cursor-pointer select-none">
-                    <div class="card-inner relative w-full h-full shadow-lg rounded-2xl border border-teal-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-                        <!-- Front -->
-                        <div class="card-front absolute inset-0 p-6 flex flex-col justify-between items-center text-center bg-gradient-to-b from-teal-50 to-white dark:from-slate-800 dark:to-slate-850 rounded-2xl">
-                            <span class="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider" id="fcCategory">Khái niệm cốt lõi</span>
-                            <div class="my-auto px-4">
-                                <h4 class="text-lg font-bold text-slate-800 dark:text-slate-100" id="fcQuestion">Câu hỏi ghi nhớ sẽ hiện ở đây</h4>
-                            </div>
-                            <span class="text-xs text-slate-400"><i class="fa-solid fa-rotate mr-1"></i>Nhấn để lật thẻ</span>
-                        </div>
-                        <!-- Back -->
-                        <div class="card-back absolute inset-0 p-6 flex flex-col justify-between items-center text-center bg-teal-700 dark:bg-slate-700 text-white rounded-2xl">
-                            <span class="text-xs font-bold text-teal-200 uppercase tracking-wider">Đáp án / Giải thích</span>
-                            <div class="my-auto px-4">
-                                <p class="text-sm font-medium leading-relaxed" id="fcAnswer">Đáp án chi tiết sẽ hiện ở đây</p>
-                            </div>
-                            <span class="text-xs text-teal-300"><i class="fa-solid fa-rotate mr-1"></i>Nhấn để quay lại</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Navigation controls -->
-                <div class="flex justify-between items-center mt-4">
-                    <button onclick="prevCard()" class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 shadow-sm flex items-center">
-                        <i class="fa-solid fa-chevron-left mr-1.5"></i>Thẻ Trước
-                    </button>
-                    <button onclick="markCardMastered()" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-slate-900 rounded-lg text-xs font-bold shadow flex items-center">
-                        <i class="fa-solid fa-check mr-1"></i>Đã thuộc
-                    </button>
-                    <button onclick="nextCard()" class="px-4 py-2 bg-teal-700 dark:bg-teal-600 text-white rounded-lg text-xs font-bold hover:bg-teal-800 shadow flex items-center">
-                        Thẻ Tiếp <i class="fa-solid fa-chevron-right ml-1.5"></i>
-                    </button>
+                <div class="p-5 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                    <h3 class="font-bold text-lg mb-2 text-sky-600 dark:text-sky-400">2. Các Hình Thức Vận Chuyển</h3>
+                    <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-300">
+                        <li>• <strong>Khuếch tán thụ động:</strong> Cùng chiều nồng độ, không tốn ATP.
+                            <br><span class="text-xs text-slate-500 dark:text-slate-400">- Đơn thuần: O2, CO2, Rượu, Axit béo, Vitamin tan trong dầu.</span>
+                            <br><span class="text-xs text-slate-500 dark:text-slate-400">- Qua kênh: Nước, các ion (Na+, K+, Ca++).</span>
+                            <br><span class="text-xs text-slate-500 dark:text-slate-400">- Qua chất mang (Hỗ trợ): Glucose, Axit amin. Có điểm bão hòa Vmax.</span>
+                        </li>
+                        <li>• <strong>Vận chuyển tích cực:</strong> Ngược chiều nồng độ, tốn ATP.
+                            <br><span class="text-xs text-slate-500 dark:text-slate-400">- Nguyên phát: Bơm Na+-K+ (3 Na+ ra, 2 K+ vào), Bơm Ca++, Bơm H+ (tế bào viền dạ dày).</span>
+                            <br><span class="text-xs text-slate-500 dark:text-slate-400">- Thứ phát: Đồng vận cùng chiều (Na+-Glucose) hoặc ngược chiều (Na+-Ca++).</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 4: TRẮC NGHIỆM TỰ LUYỆN -->
-        <section id="content-quiz" class="tab-content hidden space-y-6">
-            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex justify-between items-center flex-wrap gap-3">
-                <div>
-                    <h3 class="font-bold text-teal-800 dark:text-teal-300 text-base"><i class="fa-solid fa-graduation-cap mr-2"></i>Trắc Nghiệm Tự Đánh Giá Kiến Thức</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Các câu hỏi thiết kế sát nội dung bài giảng ĐHYK Phạm Ngọc Thạch.</p>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <div id="quizTimerBox" class="hidden text-xs font-mono font-bold bg-amber-100 text-amber-900 px-3 py-1.5 rounded-lg border border-amber-300">
-                        ⏱️ <span id="quizTimer">10:00</span>
+        <!-- TAB 2: FLASHCARDS TƯƠNG TÁC -->
+        <section id="flashcardsTab" class="hidden flex flex-col items-center justify-center py-6">
+            <div id="cardContainer" onclick="flipCard()" class="perspective w-full max-w-md h-64 cursor-pointer">
+                <div id="cardInner" class="relative w-full h-full duration-500 transform-style-3d shadow-lg rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 flex flex-col items-center justify-center text-center">
+                    <!-- Front -->
+                    <div id="cardFront" class="absolute backface-hidden w-full h-full flex flex-col items-center justify-center p-4">
+                        <span class="text-xs font-semibold uppercase text-sky-500 tracking-wider mb-2">Thẻ Nhớ Học Tập</span>
+                        <p id="cardQuestion" class="text-lg font-bold">Bơm Na+-K+ ATPase vận chuyển ion như thế nào?</p>
                     </div>
-                    <button onclick="startExamMode()" class="text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-900 px-3 py-1.5 rounded-lg shadow">
-                        <i class="fa-solid fa-stopwatch mr-1"></i>Chế độ Thi thử (10 phút)
-                    </button>
-                    <button onclick="resetQuiz()" class="text-xs font-bold bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600">
-                        <i class="fa-solid fa-arrow-rotate-left mr-1"></i>Làm lại
-                    </button>
+                    <!-- Back -->
+                    <div id="cardBack" class="absolute backface-hidden rotate-y-180 w-full h-full flex flex-col items-center justify-center p-4 bg-sky-50 dark:bg-slate-700 rounded-2xl">
+                        <p id="cardAnswer" class="text-base text-slate-800 dark:text-slate-100 font-medium">Bơm 3 Na+ ra ngoài và đưa 2 K+ vào trong tế bào, tiêu tốn 1 phân tử ATP.</p>
+                    </div>
                 </div>
             </div>
 
-            <div id="quizContainer" class="space-y-4 max-w-3xl mx-auto">
-                <!-- Quiz items dynamically inserted -->
+            <div class="flex items-center space-x-4 mt-6">
+                <button onclick="prevCard()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg font-medium text-sm hover:bg-slate-300">Trước</button>
+                <span id="cardProgress" class="text-sm font-semibold">1 / 5</span>
+                <button onclick="nextCard()" class="px-4 py-2 bg-sky-600 text-white rounded-lg font-medium text-sm hover:bg-sky-700">Tiếp</button>
             </div>
         </section>
 
-        <!-- TAB 5: TIẾN ĐỘ HỌC TẬP -->
-        <section id="content-stats" class="tab-content hidden space-y-6">
-            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
-                <h3 class="text-base font-bold text-teal-800 dark:text-teal-300 flex items-center"><i class="fa-solid fa-chart-pie mr-2"></i>Thống Kê Tiến Độ Cá Nhân</h3>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-                    <div class="p-4 bg-teal-50 dark:bg-slate-700/50 rounded-xl border border-teal-100 dark:border-slate-600">
-                        <span class="text-xs text-slate-500 dark:text-slate-400 block font-semibold">Flashcards Đã Thuộc</span>
-                        <span class="text-2xl font-bold text-teal-700 dark:text-teal-300" id="statCardsMastered">0 / 10</span>
-                    </div>
-                    <div class="p-4 bg-emerald-50 dark:bg-slate-700/50 rounded-xl border border-emerald-100 dark:border-slate-600">
-                        <span class="text-xs text-slate-500 dark:text-slate-400 block font-semibold">Điểm Trắc Nghiệm Cao Nhất</span>
-                        <span class="text-2xl font-bold text-emerald-700 dark:text-emerald-300" id="statQuizBest">0%</span>
-                    </div>
-                    <div class="p-4 bg-amber-50 dark:bg-slate-700/50 rounded-xl border border-amber-100 dark:border-slate-600">
-                        <span class="text-xs text-slate-500 dark:text-slate-400 block font-semibold">Số Chuỗi Học (Streak)</span>
-                        <span class="text-2xl font-bold text-amber-700 dark:text-amber-300" id="statStreak">1 Ngày 🔥</span>
-                    </div>
+        <!-- TAB 3: TRẮC NGHIỆM TỰ LUYỆN -->
+        <section id="quizTab" class="hidden max-w-2xl mx-auto space-y-6">
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-4">
+                    <span id="quizIndex" class="text-xs font-bold uppercase text-sky-600">Câu hỏi 1 / 4</span>
+                    <span id="quizTimer" class="text-xs font-mono bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 px-2 py-1 rounded">⏱️ 00:30</span>
                 </div>
-
-                <div class="pt-4 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Dữ liệu được lưu tự động trên thiết bị của bạn.</p>
-                    <button onclick="clearStudyData()" class="text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline">
-                        <i class="fa-solid fa-trash mr-1"></i>Xóa dữ liệu làm lại
-                    </button>
+                <h3 id="quizQuestion" class="font-bold text-base mb-4">Loại chất nào sau đây khuếch tán trực tiếp qua lớp lipid kép của màng tế bào?</h3>
+                <div id="quizOptions" class="space-y-2">
+                    <!-- Dynamic Options -->
+                </div>
+                <div id="quizExplanation" class="hidden mt-4 p-3 bg-slate-100 dark:bg-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-300"></div>
+                <div class="mt-6 flex justify-end">
+                    <button id="nextQuizBtn" onclick="nextQuizQuestion()" class="hidden px-5 py-2 bg-sky-600 text-white font-medium text-sm rounded-lg hover:bg-sky-700">Câu tiếp theo</button>
                 </div>
             </div>
+        </section>
+
+        <!-- TAB 4: BẢNG TRA CỨU TỶ LỆ DỊCH NGOẠI BÀO / NỘI BÀO -->
+        <section id="dataTab" class="hidden overflow-x-auto">
+            <table class="w-full text-sm text-left bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700">
+                <thead class="text-xs uppercase bg-sky-100 dark:bg-slate-700 text-sky-900 dark:text-sky-200">
+                    <tr>
+                        <th class="px-4 py-3">Chất / Ion</th>
+                        <th class="px-4 py-3">Ngoại Bào (ECF)</th>
+                        <th class="px-4 py-3">Nội Bào (ICF)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    <tr><td class="px-4 py-2.5 font-bold">Na+</td><td class="px-4 py-2.5">142 mEq/L</td><td class="px-4 py-2.5">10 mEq/L</td></tr>
+                    <tr><td class="px-4 py-2.5 font-bold">K+</td><td class="px-4 py-2.5">4 mEq/L</td><td class="px-4 py-2.5">140 mEq/L</td></tr>
+                    <tr><td class="px-4 py-2.5 font-bold">Ca++</td><td class="px-4 py-2.5">2.4 mEq/L</td><td class="px-4 py-2.5">0.0001 mEq/L</td></tr>
+                    <tr><td class="px-4 py-2.5 font-bold">Cl-</td><td class="px-4 py-2.5">103 mEq/L</td><td class="px-4 py-2.5">4 mEq/L</td></tr>
+                    <tr><td class="px-4 py-2.5 font-bold">Glucose</td><td class="px-4 py-2.5">90 mg/dl</td><td class="px-4 py-2.5">0 - 20 mg/dl</td></tr>
+                    <tr><td class="px-4 py-2.5 font-bold">Proteins</td><td class="px-4 py-2.5">2 g/dl</td><td class="px-4 py-2.5">16 g/dl</td></tr>
+                </tbody>
+            </table>
         </section>
 
     </main>
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Dark Mode Logic
-        function toggleDarkMode() {
+        // --- Dark Mode ---
+        const darkModeBtn = document.getElementById('darkModeBtn');
+        darkModeBtn.addEventListener('click', () => {
             document.documentElement.classList.toggle('dark');
-            const isDark = document.documentElement.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-sun text-sm' : 'fa-solid fa-moon text-sm';
-        }
-
-        // Initialize Theme
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        }
-
-        // PWA Install Prompt Handler
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            const btn = document.getElementById('pwaInstallBtn');
-            if (btn) btn.classList.remove('hidden');
         });
 
-        function installPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(() => {
-                    deferredPrompt = null;
-                    document.getElementById('pwaInstallBtn').classList.add('hidden');
-                });
-            }
-        }
-
-        // Text To Speech (TTS)
-        function speakText(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'vi-VN';
-                utterance.rate = 0.9;
-                window.speechSynthesis.speak(utterance);
-            } else {
-                alert('Trình duyệt của bạn không hỗ trợ đọc âm thanh.');
-            }
-        }
-
-        function speakFlashcard() {
-            const fc = flashcardsData[currentCardIndex];
-            const isFlipped = document.getElementById('flashcard').classList.contains('flipped');
-            speakText(isFlipped ? fc.answer : fc.question);
-        }
-
-        // Tab switching logic
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active', 'border-teal-300', 'text-white');
-                btn.classList.add('border-transparent', 'text-teal-100');
+        // --- Tab Switching ---
+        function switchTab(tabName) {
+            ['summary', 'flashcards', 'quiz', 'data'].forEach(t => {
+                document.getElementById(t + 'Tab').classList.add('hidden');
             });
+            document.getElementById(tabName + 'Tab').classList.remove('hidden');
 
-            document.getElementById('content-' + tabId).classList.remove('hidden');
-            const activeBtn = document.getElementById('tab-' + tabId);
-            activeBtn.classList.add('active', 'border-teal-300', 'text-white');
-            activeBtn.classList.remove('border-transparent', 'text-teal-100');
-
-            if (tabId === 'stats') updateStatsUI();
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-sky-600', 'text-sky-600', 'dark:text-sky-400');
+                btn.classList.add('border-transparent', 'text-slate-600', 'dark:text-slate-400');
+            });
+            event.currentTarget.classList.add('border-sky-600', 'text-sky-600', 'dark:text-sky-400');
         }
 
-        // Flashcards Data
-        const flashcardsData = [
-            {
-                category: "Màng tế bào",
-                question: "Tỷ lệ các thành phần hóa học chính cấu tạo màng tế bào?",
-                answer: "Protein chiếm 55%, Phospholipid 25%, Cholesterol 13%, Các lipid khác 4%, Carbohydrate 3%."
-            },
-            {
-                category: "Chuyển hóa & Vận chuyển",
-                question: "Bơm Na+-K+ ATPase vận chuyển các ion theo tỷ lệ và chiều nào?",
-                answer: "Bơm 3 Na+ RA NGOÀI tế bào và đưa 2 K+ VÀO TRONG tế bào (sử dụng 1 phân tử ATP)."
-            },
-            {
-                category: "Khuếch tán",
-                question: "Sự khác biệt chính giữa khuếch tán đơn thuần và khuếch tán được hỗ trợ?",
-                answer: "Khuếch tán đơn thuần tăng tốc liên tục theo nồng độ. Khuếch tán hỗ trợ cần Protein mang (Carrier) nên đạt vận tốc tối đa Vmax khi bão hòa mang."
-            },
-            {
-                category: "Dược lý & Sinh lý",
-                question: "Thuốc Omeprazole tác động lên bơm ion nào trong cơ thể?",
-                answer: "Ức chế bơm Hydro (H+-K+ ATPase / Proton pump) ở tế bào viền tuyến dạ dày, làm giảm bài tiết acid HCl."
-            },
-            {
-                category: "Nồng độ Điện giải",
-                question: "Nồng độ Na+ và K+ ở dịch ngoại bào (ECF) và dịch nội bào (ICF) là bao nhiêu?",
-                answer: "Na+: ECF = 142 mEq/L, ICF = 10 mEq/L.\nK+: ECF = 4 mEq/L, ICF = 140 mEq/L."
-            },
-            {
-                category: "Tiêu hóa tế bào",
-                question: "Sự Opsonin hóa trong quá trình thực bào là gì?",
-                answer: "Là quá trình kháng thể gắn đặc hiệu vào vi khuẩn, làm trung gian giúp thụ thể trên màng tế bào thực bào (đại thực bào) gắn và nuốt vi khuẩn."
-            },
-            {
-                category: "Bào quan",
-                question: "Lưới nội bào trơn (Smooth ER) đảm nhận các chức năng chính nào?",
-                answer: "Tổng hợp Lipid (phospholipid & cholesterol), dị hóa glycogen thành năng lượng, và chứa enzyme khử độc các thuốc phá hủy tế bào."
-            },
-            {
-                category: "Bào quan",
-                question: "Bộ Golgi tổng hợp các loại carbohydrate đặc thù nào?",
-                answer: "Axit Sialic và Galactose. Đồng thời tạo các polymer saccharide lớn như Axit Hyaluronic và Chondroitin sulfate."
-            },
-            {
-                category: "Ẩm bào",
-                question: "Protein hình sợi nào lót phía dưới màng trong quá trình ẩm bào?",
-                answer: "Mạng lưới protein hình sợi Clathrin (bao gồm các sợi actin và myosin co thắt), cần ATP và Ca2+ ngoại bào để tách túi."
-            },
-            {
-                category: "Ty thể",
-                question: "Số lượng ATP tạo ra từ 1 phân tử Glucose đi qua chu trình chuyển hóa trong ty thể là bao nhiêu?",
-                answer: "Đường phân tạo 2 ATP ở bào tương, chuyển hóa pyruvate vào ty thể giải phóng tổng cộng khoảng 36 ATP."
-            }
+        // --- Flashcards Data & Logic ---
+        const flashcards = [
+            { q: "Bơm Na+-K+ ATPase vận chuyển ion như thế nào?", a: "Đưa 3 Na+ ra ngoài và 2 K+ vào trong tế bào, sử dụng 1 ATP." },
+            { q: "Thuốc Omeprazole ức chế cơ chế vận chuyển nào?", a: "Ức chế bơm H+-K+ ATPase (bơm Proton) ở tế bào viền dạ dày." },
+            { q: "Nồng độ ion Na+ và K+ ở nội bào là bao nhiêu?", a: "Nội bào: Na+ khoảng 10 mEq/L, K+ khoảng 140 mEq/L." },
+            { q: "Cấu trúc lớp Glycocalyx có vai trò chính là gì?", a: "Tích điện âm đẩy vật tích điện âm, gắn kết tế bào tạo mô, làm thụ thể hormone." },
+            { q: "Điểm khác biệt chính giữa khuếch tán đơn thuần và khuếch tán hỗ trợ?", a: "Khuếch tán hỗ trợ phụ thuộc protein mang nên có điểm bão hòa tốc độ tối đa Vmax." }
         ];
 
         let currentCardIndex = 0;
-        let masteredCards = JSON.parse(localStorage.getItem('masteredCards') || '[]');
+        let isFlipped = false;
 
-        function updateCardUI() {
-            const fc = flashcardsData[currentCardIndex];
-            document.getElementById('fcCategory').innerText = fc.category;
-            document.getElementById('fcQuestion').innerText = fc.question;
-            document.getElementById('fcAnswer').innerText = fc.answer;
-            document.getElementById('cardCounter').innerText = `Thẻ ${currentCardIndex + 1} / ${flashcardsData.length}`;
-            
-            const cardElem = document.getElementById('flashcard');
-            cardElem.classList.remove('flipped');
+        function updateCard() {
+            isFlipped = false;
+            document.getElementById('cardInner').classList.remove('rotate-y-180');
+            document.getElementById('cardQuestion').innerText = flashcards[currentCardIndex].q;
+            document.getElementById('cardAnswer').innerText = flashcards[currentCardIndex].a;
+            document.getElementById('cardProgress').innerText = `${currentCardIndex + 1} / ${flashcards.length}`;
         }
 
         function flipCard() {
-            document.getElementById('flashcard').classList.toggle('flipped');
+            isFlipped = !isFlipped;
+            document.getElementById('cardInner').classList.toggle('rotate-y-180');
         }
 
         function nextCard() {
-            currentCardIndex = (currentCardIndex + 1) % flashcardsData.length;
-            updateCardUI();
+            currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+            updateCard();
         }
 
         function prevCard() {
-            currentCardIndex = (currentCardIndex - 1 + flashcardsData.length) % flashcardsData.length;
-            updateCardUI();
+            currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length;
+            updateCard();
         }
 
-        function markCardMastered() {
-            if (!masteredCards.includes(currentCardIndex)) {
-                masteredCards.push(currentCardIndex);
-                localStorage.setItem('masteredCards', JSON.stringify(masteredCards));
-            }
-            nextCard();
-        }
-
-        // Quiz Data
+        // --- Quiz Data & Logic ---
         const quizData = [
             {
-                id: 1,
-                question: "Thành phần hóa học nào chiếm tỷ lệ phần trăm lớn nhất trong cấu trúc màng tế bào?",
-                options: [
-                    "Phospholipid (25%)",
-                    "Protein (55%)",
-                    "Cholesterol (13%)",
-                    "Carbohydrate (3%)"
-                ],
+                q: "Chất nào sau đây khuếch tán trực tiếp qua lớp lipid kép màng tế bào?",
+                options: ["A. Glucose", "B. Oxy và CO2", "C. Ion Na+", "D. Nước"],
                 correct: 1,
-                rationale: "Protein chiếm 55% thành phần màng tế bào (bao gồm protein xuyên màng và protein ngoại vi), đóng vai trò làm kênh, chất mang, enzyme và thụ thể."
+                exp: "Oxy, CO2, rượu và vitamin tan trong dầu có độ hòa tan lipid cao nên khuếch tán trực tiếp qua lớp lipid kép."
             },
             {
-                id: 2,
-                question: "Đặc điểm nào sau đây mô tả đúng về hoạt động của Bơm Na+-K+ ATPase?",
-                options: [
-                    "Bơm 3 K+ ra ngoài và 2 Na+ vào trong tế bào",
-                    "Bơm 3 Na+ ra ngoài và 2 K+ vào trong tế bào",
-                    "Bơm 2 Na+ ra ngoài và 3 K+ vào trong tế bào",
-                    "Bơm 3 Na+ và 3 K+ cùng vào trong tế bào"
-                ],
-                correct: 1,
-                rationale: "Bơm Na+-K+ tiêu tốn 1 ATP để đẩy 3 Na+ ra ngoại bào và đưa 2 K+ vào nội bào, giúp duy trì thể tích tế bào và điện thế màng sinh điện."
-            },
-            {
-                id: 3,
-                question: "Chất nào sau đây có thể khuếch tán đơn thuần trực tiếp qua lớp lipid kép của màng tế bào?",
-                options: [
-                    "Glucose và Galactose",
-                    "Các ion Na+, K+, Cl-",
-                    "Khí O2, CO2 và các vitamin tan trong dầu",
-                    "Các chuỗi polypeptide lớn"
-                ],
-                correct: 2,
-                rationale: "Các chất hòa tan trong lipid như O2, CO2, cồn, axit béo và vitamin tan trong dầu (A, D, E, K) có thể hòa tan và khuếch tán đơn thuần qua lớp lipid kép."
-            },
-            {
-                id: 4,
-                question: "Insulin tác động lên sự vận chuyển Glucose vào tế bào thông qua cơ chế nào?",
-                options: [
-                    "Tăng mức khuếch tán được hỗ trợ của Glucose từ 10 đến 20 lần",
-                    "Mở kênh ion Na+ gây khử cực màng",
-                    "Kích thích quá trình thực bào nguyên phân",
-                    "Ức chế bơm Hydro ATPase"
-                ],
+                q: "Insulin tác động đến cơ chế vận chuyển Glucose như thế nào?",
+                options: ["A. Tăng khuếch tán hỗ trợ lên 10-20 lần", "B. Bơm Glucose ngược nồng độ", "C. Ẩm bào Glucose", "D. Mở kênh ion"],
                 correct: 0,
-                rationale: "Insulin làm tăng mật độ protein mang GLUT4 trên màng tế bào, giúp tăng tốc độ khuếch tán được hỗ trợ của Glucose từ 10 - 20 lần."
-            },
-            {
-                id: 5,
-                question: "Nồng độ ion Canxi (Ca2+) tự do trong bào tương (dịch nội bào) duy trì ở mức bao nhiêu?",
-                options: [
-                    "2.4 mEq/L",
-                    "140 mEq/L",
-                    "0.0001 mEq/L",
-                    "103 mEq/L"
-                ],
-                correct: 2,
-                rationale: "Bơm Canxi ATPase liên tục đẩy Ca2+ ra ngoại bào (2.4 mEq/L) hoặc vào trong lưới nội chất, giữ nồng độ Ca2+ bào tương ở mức cực thấp khoảng 0.0001 mEq/L."
-            },
-            {
-                id: 6,
-                question: "Hiện tượng Opsonin hóa trong quá trình thực bào liên quan đến yếu tố nào?",
-                options: [
-                    "Kháng thể gắn đặc hiệu vào vi khuẩn làm trung gian nối với thụ thể tế bào thực bào",
-                    "Sự co thắt của các sợi Clathrin dưới lỗ màng tế bào",
-                    "Sự phân hủy của glycogen thành glucose bới lưới nội bào trơn",
-                    "Sự hòa màng của túi bài tiết Golgi với màng tế bào"
-                ],
-                correct: 0,
-                rationale: "Opsonin hóa là quá trình vi khuẩn bị bao phủ bởi kháng thể đặc hiệu, từ đó các thụ thể màng của bạch cầu trung tính hoặc đại thực bào dễ dàng nhận diện và thực bào."
-            },
-            {
-                id: 7,
-                question: "Bào quan nào đảm nhận chức năng chế biến sản phẩm từ ER, tổng hợp Axit Sialic, Galactose và đóng gói tạo Lysosome?",
-                options: [
-                    "Ty thể",
-                    "Hạt trung tâm",
-                    "Bộ Golgi",
-                    "Ribosome tự do"
-                ],
-                correct: 2,
-                rationale: "Bộ Golgi tiếp nhận các túi vận chuyển từ lưới nội bào, hoàn thiện chế biến protein/lipid, tổng hợp carbohydrate riêng (axit sialic, galactose) và tạo ra lysosome."
+                exp: "Insulin kích thích đưa thụ thể GLUT4 lên màng, làm tăng tốc độ khuếch tán hỗ trợ của glucose từ 10 đến 20 lần."
             }
         ];
 
-        let quizScore = 0;
-        let quizTimerInterval;
+        let currentQuizIndex = 0;
 
-        function renderQuiz() {
-            const container = document.getElementById('quizContainer');
-            container.innerHTML = '';
-
-            quizData.forEach((q, idx) => {
-                const card = document.createElement('div');
-                card.className = "bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3";
-                
-                let optionsHTML = '';
-                q.options.forEach((opt, oIdx) => {
-                    optionsHTML += `
-                        <label class="flex items-start space-x-3 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-teal-50/50 dark:hover:bg-slate-700 cursor-pointer text-xs transition-colors" id="opt-${q.id}-${oIdx}">
-                            <input type="radio" name="quiz-${q.id}" value="${oIdx}" onchange="checkAnswer(${q.id}, ${oIdx})" class="mt-0.5 text-teal-600 focus:ring-teal-500">
-                            <span class="text-slate-700 dark:text-slate-200">${opt}</span>
-                        </label>
-                    `;
-                });
-
-                card.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <span class="font-bold text-teal-800 dark:text-teal-300 text-xs bg-teal-50 dark:bg-slate-700 px-2.5 py-1 rounded-md border border-teal-200 dark:border-slate-600">Câu ${idx + 1}</span>
-                    </div>
-                    <p class="font-bold text-slate-800 dark:text-slate-100 text-xs sm:text-sm leading-snug">${q.question}</p>
-                    <div class="space-y-2 mt-2">
-                        ${optionsHTML}
-                    </div>
-                    <div id="explain-${q.id}" class="hidden p-3 rounded-lg text-xs leading-relaxed mt-2"></div>
-                `;
-
-                container.appendChild(card);
-            });
-        }
-
-        function checkAnswer(qId, selectedIdx) {
-            const question = quizData.find(q => q.id === qId);
-            const explainDiv = document.getElementById(`explain-${qId}`);
+        function loadQuiz() {
+            const current = quizData[currentQuizIndex];
+            document.getElementById('quizIndex').innerText = `Câu hỏi ${currentQuizIndex + 1} / ${quizData.length}`;
+            document.getElementById('quizQuestion').innerText = current.q;
             
-            // Disable inputs for this question
-            const inputs = document.getElementsByName(`quiz-${qId}`);
-            inputs.forEach(input => input.disabled = true);
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
 
-            if (selectedIdx === question.correct) {
-                quizScore++;
-                document.getElementById(`opt-${qId}-${selectedIdx}`).classList.add('bg-emerald-50', 'dark:bg-emerald-950', 'border-emerald-400', 'font-semibold');
-                explainDiv.className = "p-3 rounded-lg text-xs leading-relaxed mt-2 bg-emerald-50 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800";
-                explainDiv.innerHTML = `<strong class="block mb-0.5 text-emerald-800 dark:text-emerald-300"><i class="fa-solid fa-circle-check mr-1"></i>Đúng rồi!</strong> ${question.rationale}`;
-            } else {
-                document.getElementById(`opt-${qId}-${selectedIdx}`).classList.add('bg-rose-50', 'dark:bg-rose-950', 'border-rose-300', 'text-rose-900', 'dark:text-rose-200');
-                document.getElementById(`opt-${qId}-${question.correct}`).classList.add('bg-emerald-50', 'dark:bg-emerald-950', 'border-emerald-400', 'font-semibold');
-                explainDiv.className = "p-3 rounded-lg text-xs leading-relaxed mt-2 bg-rose-50 dark:bg-rose-950 text-rose-950 dark:text-rose-200 border border-rose-200 dark:border-rose-800";
-                explainDiv.innerHTML = `<strong class="block mb-0.5 text-rose-800 dark:text-rose-300"><i class="fa-solid fa-circle-xmark mr-1"></i>Chưa chính xác!</strong> ${question.rationale}`;
-            }
+            current.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-700 transition text-sm font-medium";
+                btn.innerText = opt;
+                btn.onclick = () => selectOption(idx);
+                optionsContainer.appendChild(btn);
+            });
 
-            explainDiv.classList.remove('hidden');
-
-            // Save best score
-            const currentPercentage = Math.round((quizScore / quizData.length) * 100);
-            const bestScore = localStorage.getItem('bestQuizScore') || 0;
-            if (currentPercentage > bestScore) {
-                localStorage.setItem('bestQuizScore', currentPercentage);
-            }
+            document.getElementById('quizExplanation').classList.add('hidden');
+            document.getElementById('nextQuizBtn').classList.add('hidden');
         }
 
-        function startExamMode() {
-            resetQuiz();
-            const timerBox = document.getElementById('quizTimerBox');
-            timerBox.classList.remove('hidden');
-            let timeLeft = 600; // 10 minutes
-
-            clearInterval(quizTimerInterval);
-            quizTimerInterval = setInterval(() => {
-                timeLeft--;
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                document.getElementById('quizTimer').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-                if (timeLeft <= 0) {
-                    clearInterval(quizTimerInterval);
-                    alert('Đã hết thời gian thi thử!');
-                }
-            }, 1000);
+        function selectOption(idx) {
+            const current = quizData[currentQuizIndex];
+            const explanation = document.getElementById('quizExplanation');
+            explanation.innerText = (idx === current.correct ? "✅ Chính xác! " : "❌ Chưa đúng! ") + current.exp;
+            explanation.classList.remove('hidden');
+            document.getElementById('nextQuizBtn').classList.remove('hidden');
         }
 
-        function resetQuiz() {
-            quizScore = 0;
-            clearInterval(quizTimerInterval);
-            document.getElementById('quizTimerBox').classList.add('hidden');
-            renderQuiz();
+        function nextQuizQuestion() {
+            currentQuizIndex = (currentQuizIndex + 1) % quizData.length;
+            loadQuiz();
         }
 
-        function updateStatsUI() {
-            document.getElementById('statCardsMastered').innerText = `${masteredCards.length} / ${flashcardsData.length}`;
-            const best = localStorage.getItem('bestQuizScore') || 0;
-            document.getElementById('statQuizBest').innerText = `${best}%`;
-        }
-
-        function clearStudyData() {
-            if (confirm('Bạn có chắc muốn xóa tất cả tiến độ học tập?')) {
-                localStorage.clear();
-                masteredCards = [];
-                updateStatsUI();
-            }
-        }
-
-        // Search logic
-        function handleSearch() {
-            const query = document.getElementById('searchInput').value.trim().toLowerCase();
-            const resultsBox = document.getElementById('searchResults');
-            const list = document.getElementById('searchResultsList');
-
-            if (query.length < 2) {
-                resultsBox.classList.add('hidden');
-                return;
-            }
-
-            // Search in summary content
-            const terms = [
-                { title: "Bơm Na+-K+ ATPase", desc: "Bơm 3 Na+ ra ngoài, 2 K+ vào trong. Tiêu tốn ATP nguyên phát, kiểm soát thể tích tế bào.", tab: "summary" },
-                { title: "Opsonin hóa", desc: "Kháng thể gắn vi khuẩn trung gian giúp thụ thể đại thực bào gắn và thực bào.", tab: "summary" },
-                { title: "Bơm Hydro (Omeprazole)", desc: "Bơm H+ ở tế bào viền dạ dày bài tiết HCl, bị ức chế bởi Omeprazole.", tab: "summary" },
-                { title: "Clathrin", desc: "Mạng lưới protein hình sợi lót lỗ màng tế bào trong hiện tượng ẩm bào.", tab: "summary" },
-                { title: "Glycocalyx", desc: "Lớp carbohydrate phủ ngoài màng tế bào tích điện âm, giúp dính tế bào tạo mô.", tab: "summary" },
-                { title: "Vmax (Vận tốc tối đa)", desc: "Giới hạn khuếch tán được hỗ trợ khi toàn bộ protein mang carrier bị bão hòa.", tab: "summary" },
-                { title: "Nồng độ Na+ ECF vs ICF", desc: "Dịch ngoại bào 142 mEq/L, dịch nội bào 10 mEq/L.", tab: "tables" },
-                { title: "Nồng độ K+ ECF vs ICF", desc: "Dịch ngoại bào 4 mEq/L, dịch nội bào 140 mEq/L.", tab: "tables" },
-                { title: "Lysosome (Tiêu thể)", desc: "Túi chứa men thủy phân do Golgi tạo ra, tiêu hóa chất hữu cơ, vi khuẩn.", tab: "summary" }
-            ];
-
-            const matches = terms.filter(t => t.title.toLowerCase().includes(query) || t.desc.toLowerCase().includes(query));
-
-            if (matches.length > 0) {
-                list.innerHTML = matches.map(m => `
-                    <div class="p-2 bg-white dark:bg-slate-700 rounded border border-amber-200 dark:border-slate-600 cursor-pointer hover:bg-amber-100/50 dark:hover:bg-slate-600" onclick="switchTab('${m.tab}')">
-                        <strong class="text-amber-900 dark:text-amber-300 block font-bold">${m.title}</strong>
-                        <span class="text-slate-600 dark:text-slate-300 text-xs">${m.desc}</span>
-                    </div>
-                `).join('');
-            } else {
-                list.innerHTML = `<p class="text-slate-500 italic">Không tìm thấy thuật ngữ phù hợp với "${query}".</p>`;
-            }
-
-            resultsBox.classList.remove('hidden');
-        }
-
-        function clearSearch() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('searchResults').classList.add('hidden');
-        }
-
-        // Inline Service Worker Registration for PWA Offline mode
-        if ('serviceWorker' in navigator) {
-            const swCode = `
-                self.addEventListener('install', (e) => self.skipWaiting());
-                self.addEventListener('activate', (e) => self.clients.claim());
-                self.addEventListener('fetch', (e) => {
-                    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-                });
-            `;
-            const blob = new Blob([swCode], { type: 'text/javascript' });
-            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
-        }
-
-        // Initialize on load
-        window.addEventListener('DOMContentLoaded', () => {
-            updateCardUI();
-            renderQuiz();
+        // --- Text-to-Speech (TTS) ---
+        document.getElementById('ttsBtn').addEventListener('click', () => {
+            const text = flashcards[currentCardIndex].q;
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'vi-VN';
+            window.speechSynthesis.speak(msg);
         });
+
+        // Initialize App
+        updateCard();
+        loadQuiz();
     </script>
 </body>
 </html>
