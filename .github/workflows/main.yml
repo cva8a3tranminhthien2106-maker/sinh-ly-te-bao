@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinh Lý Tế Bào - PNTU Study Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        medical: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .perspective { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-200 min-h-screen flex flex-col">
+
+    <!-- Header Navigation -->
+    <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid font-bold fa-dna text-2xl text-sky-600 dark:text-sky-400"></i>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">Sinh Lý Tế Bào</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">ĐHYK Phạm Ngọc Thạch</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="ttsBtn" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-200" title="Đọc phát âm">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <button id="darkModeBtn" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-200" title="Chế độ Tối/Sáng">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex border-t border-slate-200 dark:border-slate-700 overflow-x-auto">
+            <button onclick="switchTab('summary')" class="tab-btn px-6 py-2.5 font-medium text-sm whitespace-nowrap border-b-2 border-sky-600 text-sky-600 dark:text-sky-400">Tóm Tắt Bài Học</button>
+            <button onclick="switchTab('flashcards')" class="tab-btn px-6 py-2.5 font-medium text-sm whitespace-nowrap border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-sky-600">Flashcards</button>
+            <button onclick="switchTab('quiz')" class="tab-btn px-6 py-2.5 font-medium text-sm whitespace-nowrap border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-sky-600">Trắc Nghiệm</button>
+            <button onclick="switchTab('data')" class="tab-btn px-6 py-2.5 font-medium text-sm whitespace-nowrap border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-sky-600">Bảng Tra Cứu Ion</button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4">
+
+        <!-- TAB 1: TÓM TẮT NỘI DUNG BÀI HỌC -->
+        <section id="summaryTab" class="space-y-6">
+            <div class="bg-sky-50 dark:bg-slate-800 p-4 rounded-xl border border-sky-100 dark:border-slate-700">
+                <h2 class="font-semibold text-sky-800 dark:text-sky-300 flex items-center gap-2">
+                    <i class="fa-solid fa-bullseye"></i> 6 Mục Tiêu Cốt Lõi
+                </h2>
+                <ul class="mt-2 text-sm space-y-1 text-slate-700 dark:text-slate-300 list-disc list-inside">
+                    <li>Mô tả cấu trúc màng tế bào & lớp màng kép Lipid</li>
+                    <li>Thành phần bào tương, chức năng các bào quan</li>
+                    <li>Sự tiêu hóa tế bào (Ẩm bào & Thực bào)</li>
+                    <li>Sự tổng hợp chất do Lưới nội bào & Bộ Golgi đảm bảo</li>
+                    <li>Các hình thức khuếch tán (Đơn thuần, Kênh, Chất mang)</li>
+                    <li>Các hình thức vận chuyển tích cực (Nguyên phát & Thứ phát)</li>
+                </ul>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="p-5 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                    <h3 class="font-bold text-lg mb-2 text-sky-600 dark:text-sky-400">1. Cấu Trúc Màng Tế Bào</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-2">Độ dày: 7.5 - 10 nm.</p>
+                    <ul class="text-sm space-y-1 text-slate-700 dark:text-slate-300">
+                        <li>• <strong>Protein (55%):</strong> Protein toàn bộ (kênh, mang, enzyme) & Protein ngoại vi.</li>
+                        <li>• <strong>Phospholipid (25%):</strong> Đầu ưa nước (hướng ra ngoài/trong), đuôi kị nước (hướng vào giữa).</li>
+                        <li>• <strong>Cholesterol (13%):</strong> Xen kẽ tạo độ ổn định màng.</li>
+                        <li>• <strong>Carbohydrate (3%):</strong> Tạo lớp Glycocalyx (tích điện âm, gắn tế bào, làm thụ thể receptor).</li>
+                    </ul>
+                </div>
+
+                <div class="p-5 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                    <h3 class="font-bold text-lg mb-2 text-sky-600 dark:text-sky-400">2. Các Hình Thức Vận Chuyển</h3>
+                    <ul class="text-sm space-y-2 text-slate-700 dark:text-slate-300">
+                        <li>• <strong>Khuếch tán thụ động:</strong> Cùng chiều nồng độ, không tốn ATP.
+                            <br><span class="text-xs text-slate-500 dark:text-slate-400">- Đơn thuần: O2, CO2, Rượu, Axit béo, Vitamin tan trong dầu.</span>
+                            <br><span class="text-xs text-slate-500 dark:text-slate-400">- Qua kênh: Nước, các ion (Na+, K+, Ca++).</span>
+                            <br><span class="text-xs text-slate-500 dark:text-slate-400">- Qua chất mang (Hỗ trợ): Glucose, Axit amin. Có điểm bão hòa Vmax.</span>
+                        </li>
+                        <li>• <strong>Vận chuyển tích cực:</strong> Ngược chiều nồng độ, tốn ATP.
+                            <br><span class="text-xs text-slate-500 dark:text-slate-400">- Nguyên phát: Bơm Na+-K+ (3 Na+ ra, 2 K+ vào), Bơm Ca++, Bơm H+ (tế bào viền dạ dày).</span>
+                            <br><span class="text-xs text-slate-500 dark:text-slate-400">- Thứ phát: Đồng vận cùng chiều (Na+-Glucose) hoặc ngược chiều (Na+-Ca++).</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: FLASHCARDS TƯƠNG TÁC -->
+        <section id="flashcardsTab" class="hidden flex flex-col items-center justify-center py-6">
+            <div id="cardContainer" onclick="flipCard()" class="perspective w-full max-w-md h-64 cursor-pointer">
+                <div id="cardInner" class="relative w-full h-full duration-500 transform-style-3d shadow-lg rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 flex flex-col items-center justify-center text-center">
+                    <!-- Front -->
+                    <div id="cardFront" class="absolute backface-hidden w-full h-full flex flex-col items-center justify-center p-4">
+                        <span class="text-xs font-semibold uppercase text-sky-500 tracking-wider mb-2">Thẻ Nhớ Học Tập</span>
+                        <p id="cardQuestion" class="text-lg font-bold">Bơm Na+-K+ ATPase vận chuyển ion như thế nào?</p>
+                    </div>
+                    <!-- Back -->
+                    <div id="cardBack" class="absolute backface-hidden rotate-y-180 w-full h-full flex flex-col items-center justify-center p-4 bg-sky-50 dark:bg-slate-700 rounded-2xl">
+                        <p id="cardAnswer" class="text-base text-slate-800 dark:text-slate-100 font-medium">Bơm 3 Na+ ra ngoài và đưa 2 K+ vào trong tế bào, tiêu tốn 1 phân tử ATP.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4 mt-6">
+                <button onclick="prevCard()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg font-medium text-sm hover:bg-slate-300">Trước</button>
+                <span id="cardProgress" class="text-sm font-semibold">1 / 5</span>
+                <button onclick="nextCard()" class="px-4 py-2 bg-sky-600 text-white rounded-lg font-medium text-sm hover:bg-sky-700">Tiếp</button>
+            </div>
+        </section>
+
+        <!-- TAB 3: TRẮC NGHIỆM TỰ LUYỆN -->
+        <section id="quizTab" class="hidden max-w-2xl mx-auto space-y-6">
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-4">
+                    <span id="quizIndex" class="text-xs font-bold uppercase text-sky-600">Câu hỏi 1 / 4</span>
+                    <span id="quizTimer" class="text-xs font-mono bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 px-2 py-1 rounded">⏱️ 00:30</span>
+                </div>
+                <h3 id="quizQuestion" class="font-bold text-base mb-4">Loại chất nào sau đây khuếch tán trực tiếp qua lớp lipid kép của màng tế bào?</h3>
+                <div id="quizOptions" class="space-y-2">
+                    <!-- Dynamic Options -->
+                </div>
+                <div id="quizExplanation" class="hidden mt-4 p-3 bg-slate-100 dark:bg-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-300"></div>
+                <div class="mt-6 flex justify-end">
+                    <button id="nextQuizBtn" onclick="nextQuizQuestion()" class="hidden px-5 py-2 bg-sky-600 text-white font-medium text-sm rounded-lg hover:bg-sky-700">Câu tiếp theo</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: BẢNG TRA CỨU TỶ LỆ DỊCH NGOẠI BÀO / NỘI BÀO -->
+        <section id="dataTab" class="hidden overflow-x-auto">
+            <table class="w-full text-sm text-left bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700">
+                <thead class="text-xs uppercase bg-sky-100 dark:bg-slate-700 text-sky-900 dark:text-sky-200">
+                    <tr>
+                        <th class="px-4 py-3">Chất / Ion</th>
+                        <th class="px-4 py-3">Ngoại Bào (ECF)</th>
+                        <th class="px-4 py-3">Nội Bào (ICF)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    <tr><td class="px-4 py-2.5 font-bold">Na+</td><td class="px-4 py-2.5">142 mEq/L</td><td class="px-4 py-2.5">10 mEq/L</td></tr>
+                    <tr><td class="px-4 py-2.5 font-bold">K+</td><td class="px-4 py-2.5">4 mEq/L</td><td class="px-4 py-2.5">140 mEq/L</td></tr>
+                    <tr><td class="px-4 py-2.5 font-bold">Ca++</td><td class="px-4 py-2.5">2.4 mEq/L</td><td class="px-4 py-2.5">0.0001 mEq/L</td></tr>
+                    <tr><td class="px-4 py-2.5 font-bold">Cl-</td><td class="px-4 py-2.5">103 mEq/L</td><td class="px-4 py-2.5">4 mEq/L</td></tr>
+                    <tr><td class="px-4 py-2.5 font-bold">Glucose</td><td class="px-4 py-2.5">90 mg/dl</td><td class="px-4 py-2.5">0 - 20 mg/dl</td></tr>
+                    <tr><td class="px-4 py-2.5 font-bold">Proteins</td><td class="px-4 py-2.5">2 g/dl</td><td class="px-4 py-2.5">16 g/dl</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- Dark Mode ---
+        const darkModeBtn = document.getElementById('darkModeBtn');
+        darkModeBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // --- Tab Switching ---
+        function switchTab(tabName) {
+            ['summary', 'flashcards', 'quiz', 'data'].forEach(t => {
+                document.getElementById(t + 'Tab').classList.add('hidden');
+            });
+            document.getElementById(tabName + 'Tab').classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-sky-600', 'text-sky-600', 'dark:text-sky-400');
+                btn.classList.add('border-transparent', 'text-slate-600', 'dark:text-slate-400');
+            });
+            event.currentTarget.classList.add('border-sky-600', 'text-sky-600', 'dark:text-sky-400');
+        }
+
+        // --- Flashcards Data & Logic ---
+        const flashcards = [
+            { q: "Bơm Na+-K+ ATPase vận chuyển ion như thế nào?", a: "Đưa 3 Na+ ra ngoài và 2 K+ vào trong tế bào, sử dụng 1 ATP." },
+            { q: "Thuốc Omeprazole ức chế cơ chế vận chuyển nào?", a: "Ức chế bơm H+-K+ ATPase (bơm Proton) ở tế bào viền dạ dày." },
+            { q: "Nồng độ ion Na+ và K+ ở nội bào là bao nhiêu?", a: "Nội bào: Na+ khoảng 10 mEq/L, K+ khoảng 140 mEq/L." },
+            { q: "Cấu trúc lớp Glycocalyx có vai trò chính là gì?", a: "Tích điện âm đẩy vật tích điện âm, gắn kết tế bào tạo mô, làm thụ thể hormone." },
+            { q: "Điểm khác biệt chính giữa khuếch tán đơn thuần và khuếch tán hỗ trợ?", a: "Khuếch tán hỗ trợ phụ thuộc protein mang nên có điểm bão hòa tốc độ tối đa Vmax." }
+        ];
+
+        let currentCardIndex = 0;
+        let isFlipped = false;
+
+        function updateCard() {
+            isFlipped = false;
+            document.getElementById('cardInner').classList.remove('rotate-y-180');
+            document.getElementById('cardQuestion').innerText = flashcards[currentCardIndex].q;
+            document.getElementById('cardAnswer').innerText = flashcards[currentCardIndex].a;
+            document.getElementById('cardProgress').innerText = `${currentCardIndex + 1} / ${flashcards.length}`;
+        }
+
+        function flipCard() {
+            isFlipped = !isFlipped;
+            document.getElementById('cardInner').classList.toggle('rotate-y-180');
+        }
+
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+            updateCard();
+        }
+
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length;
+            updateCard();
+        }
+
+        // --- Quiz Data & Logic ---
+        const quizData = [
+            {
+                q: "Chất nào sau đây khuếch tán trực tiếp qua lớp lipid kép màng tế bào?",
+                options: ["A. Glucose", "B. Oxy và CO2", "C. Ion Na+", "D. Nước"],
+                correct: 1,
+                exp: "Oxy, CO2, rượu và vitamin tan trong dầu có độ hòa tan lipid cao nên khuếch tán trực tiếp qua lớp lipid kép."
+            },
+            {
+                q: "Insulin tác động đến cơ chế vận chuyển Glucose như thế nào?",
+                options: ["A. Tăng khuếch tán hỗ trợ lên 10-20 lần", "B. Bơm Glucose ngược nồng độ", "C. Ẩm bào Glucose", "D. Mở kênh ion"],
+                correct: 0,
+                exp: "Insulin kích thích đưa thụ thể GLUT4 lên màng, làm tăng tốc độ khuếch tán hỗ trợ của glucose từ 10 đến 20 lần."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+
+        function loadQuiz() {
+            const current = quizData[currentQuizIndex];
+            document.getElementById('quizIndex').innerText = `Câu hỏi ${currentQuizIndex + 1} / ${quizData.length}`;
+            document.getElementById('quizQuestion').innerText = current.q;
+            
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
+
+            current.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-700 transition text-sm font-medium";
+                btn.innerText = opt;
+                btn.onclick = () => selectOption(idx);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('quizExplanation').classList.add('hidden');
+            document.getElementById('nextQuizBtn').classList.add('hidden');
+        }
+
+        function selectOption(idx) {
+            const current = quizData[currentQuizIndex];
+            const explanation = document.getElementById('quizExplanation');
+            explanation.innerText = (idx === current.correct ? "✅ Chính xác! " : "❌ Chưa đúng! ") + current.exp;
+            explanation.classList.remove('hidden');
+            document.getElementById('nextQuizBtn').classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex = (currentQuizIndex + 1) % quizData.length;
+            loadQuiz();
+        }
+
+        // --- Text-to-Speech (TTS) ---
+        document.getElementById('ttsBtn').addEventListener('click', () => {
+            const text = flashcards[currentCardIndex].q;
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'vi-VN';
+            window.speechSynthesis.speak(msg);
+        });
+
+        // Initialize App
+        updateCard();
+        loadQuiz();
+    </script>
+</body>
+</html>
